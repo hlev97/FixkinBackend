@@ -18,9 +18,15 @@ class UserController @Autowired constructor(
     private val passwordEncoder: PasswordEncoder
 ) {
 
-    @GetMapping
+    @GetMapping("/all")
     @Secured(User.ROLE_USER)
     fun getAllUsers(): MutableList<User> = userRepository.findAll()
+
+    @GetMapping("/all/usernames")
+    fun getAllUsernames(): List<String> {
+        val users = userRepository.findAll()
+        return users.map { it.userName }
+    }
 
     @GetMapping("/me")
     @Secured(User.ROLE_USER)
