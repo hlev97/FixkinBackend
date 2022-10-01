@@ -1,26 +1,26 @@
 package hu.bme.aut.it9p0z.fixkin.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.springframework.http.HttpStatus
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 import org.springframework.security.core.Authentication
-import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler
-import java.io.IOException
-import javax.servlet.ServletException
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class LogoutSuccessHandler : SimpleUrlLogoutSuccessHandler() {
+class AuthenticationSuccessHandler : AuthenticationSuccessHandler {
     private val objectMapper = Jackson2ObjectMapperBuilder.json().build<ObjectMapper>()
 
-    @Throws(IOException::class, ServletException::class)
-    override fun onLogoutSuccess(
+    override fun onAuthenticationSuccess(
         request: HttpServletRequest?,
         response: HttpServletResponse?,
         authentication: Authentication?
     ) {
-        val json = objectMapper.writeValueAsString("{\"message\":\"Successfully logged out\"}")
+        val username = authentication?.name
+        val json = objectMapper.writeValueAsString("{\"message\":\"$username successfully logged in\"}")
         response?.contentType = "application/json"
         response?.characterEncoding = "UTF-8"
+        response?.status = HttpStatus.UNAUTHORIZED.value()
         response?.writer?.write(json)
     }
 }
