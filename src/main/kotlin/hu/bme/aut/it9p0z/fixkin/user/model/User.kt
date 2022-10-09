@@ -14,10 +14,10 @@ data class User(
     val averageLifeQualityIndex: Double?,
     val roles: MutableList<String> = mutableListOf(),
     val password: String,
-    val expired: Boolean,
-    val locked: Boolean,
-    val credentialsExpired: Boolean,
-    val enabled: Boolean,
+    val expired: Boolean = false,
+    val locked: Boolean = false,
+    val credentialsExpired: Boolean = false,
+    val enabled: Boolean = false,
 ) {
 
     companion object {

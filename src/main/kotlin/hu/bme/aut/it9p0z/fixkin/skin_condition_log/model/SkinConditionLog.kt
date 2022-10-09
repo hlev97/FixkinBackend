@@ -7,12 +7,15 @@ import java.time.LocalDate
 
 @Document(collection = "skin condition logs")
 data class SkinConditionLog(
-    @Id val scLogId: Int,
+    val scLogId: Int,
     val userName: String?,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
-    val creationDate: LocalDate,
-    var feeling: String,
-    var triggers: HashMap<String,Boolean>,
+    @Id val creationDate: LocalDate,
+    val feeling: String,
+    val foodTriggers: HashMap<String,Boolean>,
+    val weatherTriggers: HashMap<String,Boolean>,
+    val mentalHealthTriggers: HashMap<String,Boolean>,
+    val otherTriggers: HashMap<String,Boolean>
 )
 
 fun SkinConditionLog.hideUsername() = SkinConditionLog(
@@ -20,7 +23,10 @@ fun SkinConditionLog.hideUsername() = SkinConditionLog(
     userName = null,
     creationDate = creationDate,
     feeling = feeling,
-    triggers = triggers,
+    foodTriggers = foodTriggers,
+    weatherTriggers = weatherTriggers,
+    mentalHealthTriggers = mentalHealthTriggers,
+    otherTriggers = otherTriggers
 )
 
 

@@ -6,12 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.Update
 import org.springframework.data.mongodb.repository.MongoRepository
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 @Repository
-interface SurveyLogMongoRepository : MongoRepository<SurveyLog,Int>
+interface SurveyLogMongoRepository : MongoRepository<SurveyLog,LocalDate>
 
 @Service
 class SurveyLogOperationsService @Autowired constructor(
@@ -19,55 +23,70 @@ class SurveyLogOperationsService @Autowired constructor(
     private val mongoTemplate: MongoTemplate
 ) : SurveyLogOperations {
 
-    override fun getAllLogs(): List<SurveyLog> = repository.findAll().map { log -> log.hideUsername() }
+    override fun getAllLogs(): ResponseEntity<List<SurveyLog>> = ResponseEntity.ok(
+        repository.findAll().map { log -> log.hideUsername() }
+    )
 
-    override fun getAllLogsByUser(userName: String): List<SurveyLog> {
-        val query = Query()
-        query.addCriteria(Criteria.where("userName").`is`(userName))
-        return mongoTemplate.find(query, SurveyLog::class.java)
+
+    override fun getAllLogsByUser(userName: String): ResponseEntity<List<SurveyLog>> {
+        return try {
+            val query = Query()
+            query.addCriteria(Criteria.where("userName").`is`(userName))
+            val queryResult = mongoTemplate.find(query, SurveyLog::class.java)
+            ResponseEntity.ok(queryResult)
+        } catch (e: Exception) {
+            ResponseEntity.notFound().build()
+        }
     }
 
-    override fun insertLog(userName: String, log: SurveyLog): SurveyLog {
+    override fun insertLog(userName: String, log: SurveyLog): ResponseEntity<SurveyLog> {
+        val logsByUser = repository.findAll()
         val logToInsert = SurveyLog(
-            surveyLogId = log.surveyLogId,
+            surveyLogId = logsByUser.size+1,
             userName = userName,
             creationDate = log.creationDate,
             result = log.result
         )
-        return repository.insert(logToInsert).hideUsername()
+        val responseLog = repository.insert(logToInsert).hideUsername()
+        return ResponseEntity.ok(responseLog)
     }
 
-    override fun updateLog(userName: String, surveyLogId: Int, log: SurveyLog): SurveyLog {
-        val logToUpdate = repository.findById(surveyLogId)
-        if (logToUpdate.isPresent) {
-            val updatedLog = SurveyLog(
-                surveyLogId = logToUpdate.get().surveyLogId,
-                userName = userName,
-                creationDate = log.creationDate,
-                result = log.result
-            )
-            return repository.insert(updatedLog).hideUsername()
-        } else throw Exception("Log with the given id is not in the database")
+    override fun updateLog(userName: String, surveyLogId: Int, log: SurveyLog): ResponseEntity<SurveyLog> {
+        val query = Query()
+        query.addCriteria(Criteria.where("surveyLogId").`is`(surveyLogId))
+        val update = Update()
+        update.set("result",log.result)
+        val updateResult = mongoTemplate.updateFirst(query,update, SurveyLog::class.java)
+        if (!updateResult.wasAcknowledged()) {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build()
+        }
+        return ResponseEntity.ok(log)
     }
 
-    override fun deleteLog(userName: String, surveyLogId: Int) {
-        try {
-            val logs = getAllLogsByUser(userName)
+    override fun deleteLog(userName: String, surveyLogId: Int): ResponseEntity<Any> {
+        return try {
+            val query = Query()
+            query.addCriteria(Criteria.where("userName").`is`(userName))
+            val logs = mongoTemplate.find(query, SurveyLog::class.java)
             val logToDelete = logs[surveyLogId]
             if (logToDelete.userName == userName) {
                 repository.delete(logToDelete)
-            } else throw Exception("You are not authorized to delete this user's log.")
+                ResponseEntity.ok().build()
+            } else ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
         } catch (e: Exception) {
-            throw e
+            ResponseEntity.status(HttpStatus.CONFLICT).build()
         }
     }
 
-    override fun deleteAllLogsOfUser(userName: String) {
-        try {
-            val logs = getAllLogsByUser(userName)
+    override fun deleteAllLogsOfUser(userName: String): ResponseEntity<Any> {
+        return try {
+            val query = Query()
+            query.addCriteria(Criteria.where("userName").`is`(userName))
+            val logs = mongoTemplate.find(query, SurveyLog::class.java)
             repository.deleteAll(logs)
+            ResponseEntity.ok().build()
         } catch (e: Exception) {
-            throw e
+            ResponseEntity.status(HttpStatus.CONFLICT).build()
         }
     }
 

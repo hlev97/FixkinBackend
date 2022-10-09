@@ -34,8 +34,6 @@ class SecurityConfig @Autowired constructor(
             .csrf()
             .disable()
             .authorizeHttpRequests()
-            .antMatchers("/users/*").permitAll()
-            .antMatchers("/").hasRole("USER")
             .and()
             .formLogin()
             .successHandler(AuthenticationSuccessHandler())
