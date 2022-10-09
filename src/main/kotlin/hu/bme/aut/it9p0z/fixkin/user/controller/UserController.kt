@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.annotation.Secured
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.client.HttpClientErrorException.Unauthorized
 import java.io.Serializable
 import java.security.Principal
 
@@ -28,20 +32,24 @@ class UserController @Autowired constructor(
         return users.map { it.userName }
     }
 
-    @GetMapping("/me")
+    @GetMapping("/me/principal")
     @Secured(User.ROLE_USER)
     fun userData(principal: Principal?): ResponseEntity<Principal?>? {
         return ResponseEntity(principal, HttpStatus.OK)
     }
 
-    @GetMapping("/{userName}")
+    @GetMapping("/me")
     @Secured(User.ROLE_USER)
-    fun getUser(@PathVariable("userName") userName: String): Any {
-        val user = userRepository.findById(userName)
-        return if (user.isPresent) {
-            user.get()
-        } else "User not found"
-    }
+    fun getMe(): ResponseEntity<Any> =
+        try {
+            val auth: Authentication = SecurityContextHolder.getContext().authentication
+            val user = userRepository.findById(auth.name)
+            if (user.isPresent) {
+                ResponseEntity(user.get(), HttpStatus.OK)
+            } else throw UsernameNotFoundException("Username not found")
+        } catch (e: UsernameNotFoundException) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
+        }
 
     @PostMapping("/create")
     fun addNewUser(@RequestBody user: User): User {

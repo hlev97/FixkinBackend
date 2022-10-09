@@ -7,10 +7,10 @@ import java.time.LocalDate
 
 @Document("surveys")
 data class SurveyLog(
-    @Id val surveyLogId: Int,
+    val surveyLogId: Int,
     val userName: String?,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
-    val creationDate: LocalDate,
+    @Id val creationDate: LocalDate,
     val result: Double,
 )
 
