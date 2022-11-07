@@ -26,6 +26,9 @@ dependencies {
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+	testImplementation("junit:junit:4.13.2")
+	testImplementation("org.assertj:assertj-core:3.23.1")
 }
 
 tasks.withType<KotlinCompile> {

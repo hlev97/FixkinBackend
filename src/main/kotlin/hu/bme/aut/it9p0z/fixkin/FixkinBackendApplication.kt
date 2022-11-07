@@ -29,9 +29,9 @@ class FixkinBackendApplication : CommandLineRunner {
 	private lateinit var surveyLogService: SurveyLogOperationsService
 
 	override fun run(vararg args: String?) {
-		addUser()
-		addConditionLogs()
-		addSurveyLogs()
+//		addUser()
+//		addConditionLogs()
+//		addSurveyLogs()
 	}
 
 	private fun addUser() {
@@ -43,7 +43,7 @@ class FixkinBackendApplication : CommandLineRunner {
 			averageLifeQualityIndex = null,
 			diseases = arrayListOf("inverse psoriasis", "plaque psoriasis"),
 			medicines = arrayListOf("methotrexate"),
-			roles = mutableListOf(User.ROLE_USER),
+			roles = mutableListOf(User.ROLE_USER, User.ROLE_ADMIN),
 			password = passwordEncoder.encode("password"),
 			enabled = true
 		)
