@@ -27,15 +27,15 @@ class UserController @Autowired constructor(
     fun getAllUsers(): MutableList<User> = userRepository.findAll()
 
     @GetMapping("/all/usernames")
-    fun getAllUsernames(): List<String> {
+    fun getAllUsernames(): ResponseEntity<List<String>> {
         val users = userRepository.findAll()
-        return users.map { it.userName }
+        return ResponseEntity.ok(users.map { it.userName })
     }
 
     @GetMapping("/me/principal")
     @Secured(User.ROLE_USER)
     fun userData(principal: Principal?): ResponseEntity<Principal?>? {
-        return ResponseEntity(principal, HttpStatus.OK)
+        return ResponseEntity.ok(principal)
     }
 
     @GetMapping("/me")
@@ -51,8 +51,8 @@ class UserController @Autowired constructor(
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
         }
 
-    @PostMapping("/create")
-    fun addNewUser(@RequestBody user: User): User {
+    @PostMapping
+    fun addNewUser(@RequestBody user: User): ResponseEntity<User> {
         val userToAdd = User(
             userName = user.userName,
             fullName = user.fullName,
@@ -68,16 +68,16 @@ class UserController @Autowired constructor(
             credentialsExpired = user.credentialsExpired,
             enabled = true
         )
-        return userRepository.save(userToAdd)
+        return ResponseEntity.ok(userRepository.save(userToAdd))
     }
 
     @GetMapping("/diseases/{userName}")
     @Secured(User.ROLE_USER)
-    fun getDiseasesByUser(@PathVariable("userName") userName: String): Serializable? {
+    fun getDiseasesByUser(@PathVariable("userName") userName: String): Any {
         val user = userRepository.findById(userName)
         return if (user.isPresent) {
-            user.get().diseases
-        } else "User not found"
+            ResponseEntity.ok(user.get().diseases)
+        } else ResponseEntity.notFound()
     }
 
     @PutMapping("/diseases/add/{userName}/{newDisease}")
@@ -85,14 +85,14 @@ class UserController @Autowired constructor(
     fun addNewDiseaseToUser(
         @PathVariable("userName") userName: String,
         @PathVariable("newDisease") newDisease: String
-    ): String {
+    ): Any {
         val user = userRepository.findById(userName)
         return if (user.isPresent) {
             val userCopy = user.get()
             userCopy.diseases.add(newDisease)
             userRepository.save(userCopy)
-            "$newDisease is added $userName's diseases"
-        } else "User not found"
+            ResponseEntity.ok("$newDisease is added $userName's diseases")
+        } else ResponseEntity.notFound()
     }
 
     @PutMapping("/diseases/remove/{userName}/{diseaseToRemove}")
@@ -100,23 +100,23 @@ class UserController @Autowired constructor(
     fun removeDiseaseFromUser(
         @PathVariable("userName") userName: String,
         @PathVariable("diseaseToRemove") diseaseToRemove: String
-    ): String {
+    ): Any {
         val user = userRepository.findById(userName)
         return if (user.isPresent) {
             val userCopy = user.get()
             userCopy.diseases.remove(diseaseToRemove)
             userRepository.save(userCopy)
-            "$diseaseToRemove is removed from $userName's diseases"
-        } else "User not found"
+            ResponseEntity.ok("$diseaseToRemove is removed from $userName's diseases")
+        } else ResponseEntity.notFound()
     }
 
     @GetMapping("/medicines/{userName}")
     @Secured(User.ROLE_USER)
-    fun getMedicinesByUser(@PathVariable("userName") userName: String): Serializable? {
+    fun getMedicinesByUser(@PathVariable("userName") userName: String): Any {
         val user = userRepository.findById(userName)
         return if (user.isPresent) {
-            user.get().medicines
-        } else "User not found"
+            ResponseEntity.ok(user.get().medicines)
+        } else ResponseEntity.notFound()
     }
 
     @PutMapping("/medicines/add/{userName}/{newMedicine}")
@@ -124,14 +124,14 @@ class UserController @Autowired constructor(
     fun addNewMedicineToUser(
         @PathVariable("userName") userName: String,
         @PathVariable("newMedicine") newMedicine: String
-    ): String {
+    ): Any {
         val user = userRepository.findById(userName)
         return if (user.isPresent) {
             val userCopy = user.get()
             userCopy.medicines.add(newMedicine)
             userRepository.save(userCopy)
-            "$newMedicine is added $userName's medicines"
-        } else "User not found"
+            ResponseEntity.ok("$newMedicine is added $userName's medicines")
+        } else ResponseEntity.notFound()
     }
 
     @PutMapping("/medicines/remove/{userName}/{medicineToRemove}")
@@ -139,14 +139,13 @@ class UserController @Autowired constructor(
     fun removeMedicine(
         @PathVariable("userName") userName: String,
         @PathVariable("medicineToRemove") medicineToRemove: String
-    ): String {
+    ): Any {
         val user = userRepository.findById(userName)
         return if (user.isPresent) {
             val userCopy = user.get()
             userCopy.medicines.remove(medicineToRemove)
             userRepository.save(userCopy)
-            "$medicineToRemove is removed from $userName's medicines"
-        } else "User not found"
+            ResponseEntity.ok("$medicineToRemove is removed from $userName's medicines")
+        } else ResponseEntity.notFound()
     }
-
 }

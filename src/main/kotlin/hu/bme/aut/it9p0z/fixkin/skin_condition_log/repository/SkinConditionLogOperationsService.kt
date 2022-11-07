@@ -77,43 +77,29 @@ class SkinConditionLogOperationsService @Autowired constructor(
             query.addCriteria(Criteria.where("userName").`is`(userName))
             val logs = mongoTemplate.find(query, SkinConditionLog::class.java)
             val logToDelete = logs[scLogId]
-            if (logToDelete.userName == userName) {
-                repository.delete(logToDelete)
-                ResponseEntity.ok().build()
-            } else ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
-        } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.CONFLICT).build()
-        }
-    }
-
-    override fun deleteAllLogsOfUser(userName: String): ResponseEntity<Any> {
-        return try {
-            val query = Query()
-            query.addCriteria(Criteria.where("userName").`is`(userName))
-            val logs = mongoTemplate.find(query, SkinConditionLog::class.java)
-            repository.deleteAll(logs)
+            repository.delete(logToDelete)
             ResponseEntity.ok().build()
         } catch (e: Exception) {
             ResponseEntity.status(HttpStatus.CONFLICT).build()
         }
     }
 
+    override fun deleteAllLogsOfUser(userName: String): ResponseEntity<Any> {
+        val query = Query()
+        query.addCriteria(Criteria.where("userName").`is`(userName))
+        val logs = mongoTemplate.find(query, SkinConditionLog::class.java)
+        repository.deleteAll(logs)
+        return ResponseEntity.ok().build()
+    }
+
     override fun getStatistics(userName: String): ResponseEntity<ConditionLogStatistics> {
-        return try {
-            val logs = repository.findAll()
-            return ResponseEntity.ok(getStatisticsOfTriggers(logs))
-        } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.CONFLICT).build()
-        }
+        val logs = repository.findAll()
+        return ResponseEntity.ok(getStatisticsOfTriggers(logs))
     }
 
     override fun getCreationDates(userName: String): ResponseEntity<List<LocalDate>> {
-        return try {
-            val creationDates = repository.findAll().map { it.creationDate }
-            return ResponseEntity.ok(creationDates)
-        } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.CONFLICT).build()
-        }
+        val creationDates = repository.findAll().map { it.creationDate }
+        return ResponseEntity.ok(creationDates)
     }
 
     private fun getStatisticsOfTriggers(logs: List<SkinConditionLog>): ConditionLogStatistics {

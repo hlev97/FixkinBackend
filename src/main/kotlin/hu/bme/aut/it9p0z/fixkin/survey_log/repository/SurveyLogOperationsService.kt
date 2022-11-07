@@ -55,27 +55,27 @@ class SurveyLogOperationsService @Autowired constructor(
         val query = Query()
         query.addCriteria(Criteria.where("surveyLogId").`is`(surveyLogId))
         val update = Update()
-        update.set("result",log.result)
+        val logUpdate = SurveyLog(
+            surveyLogId = surveyLogId,
+            userName = userName,
+            creationDate = log.creationDate,
+            result = log.result
+        )
+        update.set("result",logUpdate.result)
         val updateResult = mongoTemplate.updateFirst(query,update, SurveyLog::class.java)
         if (!updateResult.wasAcknowledged()) {
             return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build()
         }
-        return ResponseEntity.ok(log)
+        return ResponseEntity.ok(logUpdate.hideUsername())
     }
 
     override fun deleteLog(userName: String, surveyLogId: Int): ResponseEntity<Any> {
-        return try {
-            val query = Query()
-            query.addCriteria(Criteria.where("userName").`is`(userName))
-            val logs = mongoTemplate.find(query, SurveyLog::class.java)
-            val logToDelete = logs[surveyLogId]
-            if (logToDelete.userName == userName) {
-                repository.delete(logToDelete)
-                ResponseEntity.ok().build()
-            } else ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
-        } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.CONFLICT).build()
-        }
+        val query = Query()
+        query.addCriteria(Criteria.where("userName").`is`(userName))
+        val logs = mongoTemplate.find(query, SurveyLog::class.java)
+        val logToDelete = logs[surveyLogId]
+        repository.delete(logToDelete)
+        return ResponseEntity.ok().build()
     }
 
     override fun deleteAllLogsOfUser(userName: String): ResponseEntity<Any> {
