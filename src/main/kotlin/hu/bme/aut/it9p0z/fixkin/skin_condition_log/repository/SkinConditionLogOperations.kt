@@ -15,7 +15,7 @@ interface SkinConditionLogOperations {
 
     fun updateLog(userName: String, scLogId: Int, log: SkinConditionLog): ResponseEntity<SkinConditionLog>
 
-    fun deleteLog(userName: String, scLogId: Int): ResponseEntity<Any>
+    fun deleteLog(userName: String, scLogId: Int): Any
 
     fun deleteAllLogsOfUser(userName: String): ResponseEntity<Any>
 

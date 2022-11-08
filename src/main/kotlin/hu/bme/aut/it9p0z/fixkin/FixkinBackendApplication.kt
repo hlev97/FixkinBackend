@@ -29,9 +29,9 @@ class FixkinBackendApplication : CommandLineRunner {
 	private lateinit var surveyLogService: SurveyLogOperationsService
 
 	override fun run(vararg args: String?) {
-//		addUser()
-//		addConditionLogs()
-//		addSurveyLogs()
+		addUser()
+		addConditionLogs()
+		addSurveyLogs()
 	}
 
 	private fun addUser() {

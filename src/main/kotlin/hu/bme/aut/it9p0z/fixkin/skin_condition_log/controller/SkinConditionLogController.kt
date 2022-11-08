@@ -51,7 +51,7 @@ class SkinConditionLogController @Autowired constructor(
     @Secured(User.ROLE_USER)
     fun deleteLogById(
         @PathVariable("scLogId") scLogId: Int
-    ): ResponseEntity<Any> {
+    ): Any {
         val auth: Authentication = SecurityContextHolder.getContext().authentication
         return operationsService.deleteLog(auth.name, scLogId)
     }

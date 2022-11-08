@@ -71,17 +71,13 @@ class SkinConditionLogOperationsService @Autowired constructor(
         return ResponseEntity.ok(log)
     }
 
-    override fun deleteLog(userName: String, scLogId: Int): ResponseEntity<Any> {
-        return try {
-            val query = Query()
-            query.addCriteria(Criteria.where("userName").`is`(userName))
-            val logs = mongoTemplate.find(query, SkinConditionLog::class.java)
-            val logToDelete = logs[scLogId]
-            repository.delete(logToDelete)
-            ResponseEntity.ok().build()
-        } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.CONFLICT).build()
-        }
+    override fun deleteLog(userName: String, scLogId: Int): Any {
+        val query = Query()
+        query.addCriteria(Criteria.where("userName").`is`(userName))
+        val logs = mongoTemplate.find(query, SkinConditionLog::class.java)
+        val logToDelete = logs.find { it.scLogId == scLogId } ?: return ResponseEntity.notFound()
+        repository.delete(logToDelete)
+        return ResponseEntity.ok(logToDelete)
     }
 
     override fun deleteAllLogsOfUser(userName: String): ResponseEntity<Any> {
