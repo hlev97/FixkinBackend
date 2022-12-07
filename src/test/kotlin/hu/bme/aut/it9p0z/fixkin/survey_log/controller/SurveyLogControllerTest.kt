@@ -61,8 +61,8 @@ class SurveyLogControllerTest {
     }
 
     @Test
-    fun getAllLogs_Allowed() {
-        val result = "[{\"surveyLogId\":1,\"userName\":null,\"creationDate\":\"2022/09/21\",\"result\":14.0},{\"surveyLogId\":2,\"userName\":null,\"creationDate\":\"2022/09/27\",\"result\":12.0},{\"surveyLogId\":3,\"userName\":null,\"creationDate\":\"2022/10/04\",\"result\":13.0},{\"surveyLogId\":4,\"userName\":null,\"creationDate\":\"2022/10/11\",\"result\":15.0},{\"surveyLogId\":5,\"userName\":null,\"creationDate\":\"2022/10/17\",\"result\":12.0}]"
+    fun `get all survey logs, request allowed`() {
+        val result = "[{\"id\":1,\"surveyLogId\":1,\"userName\":null,\"creationDate\":\"2022/12/01\",\"result\":14.0},{\"id\":2,\"surveyLogId\":2,\"userName\":null,\"creationDate\":\"2022/12/02\",\"result\":12.0},{\"id\":3,\"surveyLogId\":3,\"userName\":null,\"creationDate\":\"2022/12/03\",\"result\":13.0},{\"id\":4,\"surveyLogId\":4,\"userName\":null,\"creationDate\":\"2022/12/04\",\"result\":15.0},{\"id\":5,\"surveyLogId\":5,\"userName\":null,\"creationDate\":\"2022/12/05\",\"result\":12.0}]"
         mvc.perform(get("http://localhost:8102/survey_logs/all")
             .with(user("hlev97").password("password").roles("ADMIN","USER"))
             .contentType(MediaType.APPLICATION_JSON))
@@ -80,8 +80,8 @@ class SurveyLogControllerTest {
 
     @Test
     fun addNewLog() {
-        val body = "{\"creationDate\":\"2022/10/21\",\"result\":14.0}"
-        val result = "{\"surveyLogId\":6,\"userName\":null,\"creationDate\":\"2022/10/21\",\"result\":14.0}"
+        val body = "{\"creationDate\":\"2022/12/06\",\"result\":14.0}"
+        val result = "{\"id\":6,\"surveyLogId\":6,\"userName\":null,\"creationDate\":\"2022/12/06\",\"result\":14.0}"
         mvc.perform(post("http://localhost:8102/survey_logs/")
             .content(body)
             .accept(MediaType.APPLICATION_JSON)
@@ -92,8 +92,8 @@ class SurveyLogControllerTest {
 
     @Test
     fun updateLog() {
-        val body = "{\"creationDate\":\"2022/09/26\",\"result\":14.0}"
-        val result = "{\"surveyLogId\":2,\"userName\":null,\"creationDate\":\"2022/09/26\",\"result\":14.0}"
+        val body = "{\"creationDate\":\"2022/12/02\",\"result\":14.0}"
+        val result = "{\"id\":0,\"surveyLogId\":0,\"userName\":null,\"creationDate\":\"2022/12/02\",\"result\":14.0}"
         mvc.perform(put("http://localhost:8102/survey_logs/{surveyLogId}","2")
             .content(body)
             .accept(MediaType.APPLICATION_JSON)
@@ -105,7 +105,7 @@ class SurveyLogControllerTest {
 
     @Test
     fun getAllLogsByUser() {
-        val result = "[{\"surveyLogId\":1,\"userName\":\"hlev97\",\"creationDate\":\"2022/09/21\",\"result\":14.0},{\"surveyLogId\":2,\"userName\":\"hlev97\",\"creationDate\":\"2022/09/27\",\"result\":12.0},{\"surveyLogId\":3,\"userName\":\"hlev97\",\"creationDate\":\"2022/10/04\",\"result\":13.0},{\"surveyLogId\":4,\"userName\":\"hlev97\",\"creationDate\":\"2022/10/11\",\"result\":15.0},{\"surveyLogId\":5,\"userName\":\"hlev97\",\"creationDate\":\"2022/10/17\",\"result\":12.0}]"
+        val result = "[{\"id\":1,\"surveyLogId\":1,\"userName\":\"hlev97\",\"creationDate\":\"2022/12/01\",\"result\":14.0},{\"id\":2,\"surveyLogId\":2,\"userName\":\"hlev97\",\"creationDate\":\"2022/12/02\",\"result\":12.0},{\"id\":3,\"surveyLogId\":3,\"userName\":\"hlev97\",\"creationDate\":\"2022/12/03\",\"result\":13.0},{\"id\":4,\"surveyLogId\":4,\"userName\":\"hlev97\",\"creationDate\":\"2022/12/04\",\"result\":15.0},{\"id\":5,\"surveyLogId\":5,\"userName\":\"hlev97\",\"creationDate\":\"2022/12/05\",\"result\":12.0}]"
         mvc.perform(get("http://localhost:8102/survey_logs/all/me")
             .with(user("hlev97").password("password").roles("USER"))
             .contentType(MediaType.APPLICATION_JSON))
@@ -123,33 +123,38 @@ class SurveyLogControllerTest {
 
     val logs = listOf(
         SurveyLog(
+            id = 1,
             surveyLogId = 1,
             userName = "hlev97",
-            creationDate = LocalDate.of(2022,9,21),
+            creationDate = LocalDate.of(2022,12,1),
             result = 14.0
         ),
         SurveyLog(
+            id = 2,
             surveyLogId = 2,
             userName = "hlev97",
-            creationDate = LocalDate.of(2022,9,27),
+            creationDate = LocalDate.of(2022,12,2),
             result = 12.0
         ),
         SurveyLog(
+            id = 3,
             surveyLogId = 3,
             userName = "hlev97",
-            creationDate = LocalDate.of(2022,10,4),
+            creationDate = LocalDate.of(2022,12,3),
             result = 13.0
         ),
         SurveyLog(
+            id = 4,
             surveyLogId = 4,
             userName = "hlev97",
-            creationDate = LocalDate.of(2022,10,11),
+            creationDate = LocalDate.of(2022,12,4),
             result = 15.0
         ),
         SurveyLog(
+            id = 5,
             surveyLogId = 5,
             userName = "hlev97",
-            creationDate = LocalDate.of(2022,10,17),
+            creationDate = LocalDate.of(2022,12,5),
             result = 12.0
         )
     )

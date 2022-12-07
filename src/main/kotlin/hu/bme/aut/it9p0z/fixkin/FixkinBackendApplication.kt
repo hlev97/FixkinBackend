@@ -54,6 +54,7 @@ class FixkinBackendApplication : CommandLineRunner {
 	private fun addConditionLogs() {
 		val logs = listOf(
 			SkinConditionLog(
+				id = 1,
 				scLogId = 1,
 				userName = "hlev97",
 				creationDate = LocalDate.of(2022, 12, 4),
@@ -91,6 +92,7 @@ class FixkinBackendApplication : CommandLineRunner {
 				)
 			),
 			SkinConditionLog(
+				id = 2,
 				scLogId = 2,
 				userName = "hlev97",
 				creationDate = LocalDate.of(2022, 12, 5),
@@ -128,6 +130,7 @@ class FixkinBackendApplication : CommandLineRunner {
 				)
 			),
 			SkinConditionLog(
+				id = 3,
 				scLogId = 3,
 				userName = "hlev97",
 				creationDate = LocalDate.of(2022, 12, 6),
@@ -165,6 +168,7 @@ class FixkinBackendApplication : CommandLineRunner {
 				)
 			),
 			SkinConditionLog(
+				id = 4,
 				scLogId = 4,
 				userName = "hlev97",
 				creationDate = LocalDate.of(2022, 12, 7),
@@ -202,6 +206,7 @@ class FixkinBackendApplication : CommandLineRunner {
 				)
 			),
 			SkinConditionLog(
+				id = 5,
 				scLogId = 5,
 				userName = "hlev97",
 				creationDate = LocalDate.of(2022, 12, 8),
@@ -239,6 +244,7 @@ class FixkinBackendApplication : CommandLineRunner {
 				)
 			),
 			SkinConditionLog(
+				id = 6,
 				scLogId = 6,
 				userName = "hlev97",
 				creationDate = LocalDate.of(2022, 12, 9),
@@ -276,6 +282,7 @@ class FixkinBackendApplication : CommandLineRunner {
 				)
 			),
 			SkinConditionLog(
+				id = 7,
 				scLogId = 7,
 				userName = "hlev97",
 				creationDate = LocalDate.of(2022, 12, 10),
@@ -313,6 +320,7 @@ class FixkinBackendApplication : CommandLineRunner {
 				)
 			),
 			SkinConditionLog(
+				id = 8,
 				scLogId = 8,
 				userName = "hlev97",
 				creationDate = LocalDate.of(2022, 12, 11),
@@ -350,6 +358,7 @@ class FixkinBackendApplication : CommandLineRunner {
 				)
 			),
 			SkinConditionLog(
+				id = 9,
 				scLogId = 9,
 				userName = "hlev97",
 				creationDate = LocalDate.of(2022, 12, 12),
@@ -387,6 +396,7 @@ class FixkinBackendApplication : CommandLineRunner {
 				)
 			),
 			SkinConditionLog(
+				id = 10,
 				scLogId = 10,
 				userName = "hlev97",
 				creationDate = LocalDate.of(2022, 12, 13),
@@ -424,6 +434,7 @@ class FixkinBackendApplication : CommandLineRunner {
 				)
 			),
 			SkinConditionLog(
+				id = 11,
 				scLogId = 11,
 				userName = "hlev97",
 				creationDate = LocalDate.of(2022, 12, 14),
@@ -469,33 +480,38 @@ class FixkinBackendApplication : CommandLineRunner {
 	private fun addSurveyLogs() {
 		val logs = listOf(
 			SurveyLog(
+				id = 1,
 				surveyLogId = 1,
 				userName = "hlev97",
-				creationDate = LocalDate.of(2022,9,21),
+				creationDate = LocalDate.of(2022,12,1),
 				result = 14.0
 			),
 			SurveyLog(
+				id = 2,
 				surveyLogId = 2,
 				userName = "hlev97",
-				creationDate = LocalDate.of(2022,9,27),
+				creationDate = LocalDate.of(2022,12,2),
 				result = 12.0
 			),
 			SurveyLog(
+				id = 3,
 				surveyLogId = 3,
 				userName = "hlev97",
-				creationDate = LocalDate.of(2022,10,4),
+				creationDate = LocalDate.of(2022,12,3),
 				result = 13.0
 			),
 			SurveyLog(
+				id = 4,
 				surveyLogId = 4,
 				userName = "hlev97",
-				creationDate = LocalDate.of(2022,10,11),
+				creationDate = LocalDate.of(2022,12,4),
 				result = 15.0
 			),
 			SurveyLog(
+				id = 5,
 				surveyLogId = 5,
 				userName = "hlev97",
-				creationDate = LocalDate.of(2022,10,17),
+				creationDate = LocalDate.of(2022,12,5),
 				result = 12.0
 			)
 		)

@@ -41,9 +41,11 @@ class SkinConditionLogOperationsService @Autowired constructor(
     }
 
     override fun insertLog(userName: String, log: SkinConditionLog): ResponseEntity<SkinConditionLog> {
-        val logsByUser = repository.findAll()
+        val logs = repository.findAll()
+        val logsByUser = getUserLogs(userName)
         val logToInsert = SkinConditionLog(
             scLogId = logsByUser.size+1,
+            id = logs.size+1,
             userName = userName,
             creationDate = log.creationDate,
             feeling = log.feeling,
@@ -54,6 +56,12 @@ class SkinConditionLogOperationsService @Autowired constructor(
         )
         val responseLog = repository.insert(logToInsert).hideUsername()
         return ResponseEntity.ok(responseLog)
+    }
+
+    private fun getUserLogs(userName: String): List<SkinConditionLog> {
+        val query = Query()
+        query.addCriteria(Criteria.where("userName").`is`(userName))
+        return mongoTemplate.find(query, SkinConditionLog::class.java)
     }
 
     override fun updateLog(userName: String, scLogId: Int, log: SkinConditionLog): ResponseEntity<SkinConditionLog> {

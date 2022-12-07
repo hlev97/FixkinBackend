@@ -7,14 +7,16 @@ import java.time.LocalDate
 
 @Document("surveys")
 data class SurveyLog(
+    @Id val id: Int,
     val surveyLogId: Int,
     val userName: String?,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
-    @Id val creationDate: LocalDate,
+    val creationDate: LocalDate,
     val result: Double,
 )
 
 fun SurveyLog.hideUsername() = SurveyLog(
+    id = id,
     surveyLogId = surveyLogId,
     userName = null,
     creationDate = creationDate,

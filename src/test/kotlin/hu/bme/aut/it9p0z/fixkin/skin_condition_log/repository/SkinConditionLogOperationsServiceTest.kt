@@ -69,7 +69,8 @@ class SkinConditionLogOperationsServiceTest {
         operations.insertLog(
             userName = "hlev97",
             log = SkinConditionLog(
-                scLogId = 12,
+                id = 6,
+                scLogId = 6,
                 userName = "hlev97",
                 creationDate = LocalDate.of(2022, 10, 28),
                 feeling = "sad",
@@ -114,6 +115,7 @@ class SkinConditionLogOperationsServiceTest {
     fun updateLog() {
         val sizeBeforeInsert = operations.getAllLogs().body?.size ?: 0
         val log = SkinConditionLog(
+            id = sizeBeforeInsert-1,
             scLogId = sizeBeforeInsert-1,
             userName = "hlev97",
             creationDate = LocalDate.now(),
@@ -157,6 +159,7 @@ class SkinConditionLogOperationsServiceTest {
         var logs = operations.getAllLogs().body ?: emptyList()
         val insertedLog = logs[logs.lastIndex]
         val upadatedLog = SkinConditionLog(
+            id = insertedLog.scLogId,
             scLogId = insertedLog.scLogId,
             userName = insertedLog.userName,
             creationDate = insertedLog.creationDate,
@@ -233,9 +236,10 @@ class SkinConditionLogOperationsServiceTest {
 
     val logs = listOf(
         SkinConditionLog(
+            id = 1,
             scLogId = 1,
             userName = "hlev97",
-            creationDate = LocalDate.of(2022, 10, 1),
+            creationDate = LocalDate.of(2022, 12, 4),
             feeling = "sad",
             foodTriggers = hashMapOf(
                 "wheat" to true,
@@ -270,9 +274,10 @@ class SkinConditionLogOperationsServiceTest {
             )
         ),
         SkinConditionLog(
+            id = 2,
             scLogId = 2,
             userName = "hlev97",
-            creationDate = LocalDate.of(2022, 10, 2),
+            creationDate = LocalDate.of(2022, 12, 5),
             feeling = "unhappy",
             foodTriggers = hashMapOf(
                 "wheat" to false,
@@ -307,9 +312,10 @@ class SkinConditionLogOperationsServiceTest {
             )
         ),
         SkinConditionLog(
+            id = 3,
             scLogId = 3,
             userName = "hlev97",
-            creationDate = LocalDate.of(2022, 10, 3),
+            creationDate = LocalDate.of(2022, 12, 6),
             feeling = "neutral",
             foodTriggers = hashMapOf(
                 "wheat" to true,
@@ -344,9 +350,10 @@ class SkinConditionLogOperationsServiceTest {
             )
         ),
         SkinConditionLog(
+            id = 4,
             scLogId = 4,
             userName = "hlev97",
-            creationDate = LocalDate.of(2022, 10, 4),
+            creationDate = LocalDate.of(2022, 12, 7),
             feeling = "neutral",
             foodTriggers = hashMapOf(
                 "wheat" to false,
@@ -381,231 +388,10 @@ class SkinConditionLogOperationsServiceTest {
             )
         ),
         SkinConditionLog(
+            id = 5,
             scLogId = 5,
             userName = "hlev97",
-            creationDate = LocalDate.of(2022, 10, 5),
-            feeling = "unhappy",
-            foodTriggers = hashMapOf(
-                "wheat" to true,
-                "milk" to true,
-                "egg" to true,
-                "sea food" to false,
-                "nightshade" to false,
-                "soy" to false,
-                "citrus" to false,
-                "fast food" to false,
-                "fatty food" to true,
-                "alcohol" to false
-            ),
-            weatherTriggers = hashMapOf(
-                "hot" to false,
-                "dry" to false,
-                "cold" to false,
-                "rainy" to false,
-                "windy" to false,
-                "snowy" to false
-            ),
-            mentalHealthTriggers = hashMapOf(
-                "anxiety" to false,
-                "depression" to false,
-                "insomnia" to true
-            ),
-            otherTriggers = hashMapOf(
-                "medicine" to false,
-                "infection" to false,
-                "sweat" to false,
-                "smoking" to true
-            )
-        ),
-        SkinConditionLog(
-            scLogId = 6,
-            userName = "hlev97",
-            creationDate = LocalDate.of(2022, 10, 6),
-            feeling = "unhappy",
-            foodTriggers = hashMapOf(
-                "wheat" to true,
-                "milk" to true,
-                "egg" to true,
-                "sea food" to false,
-                "nightshade" to false,
-                "soy" to false,
-                "citrus" to false,
-                "fast food" to false,
-                "fatty food" to true,
-                "alcohol" to false
-            ),
-            weatherTriggers = hashMapOf(
-                "hot" to false,
-                "dry" to false,
-                "cold" to false,
-                "rainy" to false,
-                "windy" to false,
-                "snowy" to false
-            ),
-            mentalHealthTriggers = hashMapOf(
-                "anxiety" to false,
-                "depression" to false,
-                "insomnia" to true
-            ),
-            otherTriggers = hashMapOf(
-                "medicine" to false,
-                "infection" to false,
-                "sweat" to false,
-                "smoking" to true
-            )
-        ),
-        SkinConditionLog(
-            scLogId = 7,
-            userName = "hlev97",
-            creationDate = LocalDate.of(2022, 10, 7),
-            feeling = "unhappy",
-            foodTriggers = hashMapOf(
-                "wheat" to true,
-                "milk" to true,
-                "egg" to true,
-                "sea food" to false,
-                "nightshade" to false,
-                "soy" to false,
-                "citrus" to false,
-                "fast food" to false,
-                "fatty food" to true,
-                "alcohol" to false
-            ),
-            weatherTriggers = hashMapOf(
-                "hot" to false,
-                "dry" to false,
-                "cold" to false,
-                "rainy" to false,
-                "windy" to false,
-                "snowy" to false
-            ),
-            mentalHealthTriggers = hashMapOf(
-                "anxiety" to false,
-                "depression" to false,
-                "insomnia" to true
-            ),
-            otherTriggers = hashMapOf(
-                "medicine" to false,
-                "infection" to false,
-                "sweat" to false,
-                "smoking" to true
-            )
-        ),
-        SkinConditionLog(
-            scLogId = 8,
-            userName = "hlev97",
-            creationDate = LocalDate.of(2022, 10, 8),
-            feeling = "unhappy",
-            foodTriggers = hashMapOf(
-                "wheat" to true,
-                "milk" to true,
-                "egg" to true,
-                "sea food" to false,
-                "nightshade" to false,
-                "soy" to false,
-                "citrus" to false,
-                "fast food" to false,
-                "fatty food" to true,
-                "alcohol" to false
-            ),
-            weatherTriggers = hashMapOf(
-                "hot" to false,
-                "dry" to false,
-                "cold" to false,
-                "rainy" to false,
-                "windy" to false,
-                "snowy" to false
-            ),
-            mentalHealthTriggers = hashMapOf(
-                "anxiety" to false,
-                "depression" to false,
-                "insomnia" to true
-            ),
-            otherTriggers = hashMapOf(
-                "medicine" to false,
-                "infection" to false,
-                "sweat" to false,
-                "smoking" to true
-            )
-        ),
-        SkinConditionLog(
-            scLogId = 9,
-            userName = "hlev97",
-            creationDate = LocalDate.of(2022, 10, 9),
-            feeling = "unhappy",
-            foodTriggers = hashMapOf(
-                "wheat" to true,
-                "milk" to true,
-                "egg" to true,
-                "sea food" to false,
-                "nightshade" to false,
-                "soy" to false,
-                "citrus" to false,
-                "fast food" to false,
-                "fatty food" to true,
-                "alcohol" to false
-            ),
-            weatherTriggers = hashMapOf(
-                "hot" to false,
-                "dry" to false,
-                "cold" to false,
-                "rainy" to false,
-                "windy" to false,
-                "snowy" to false
-            ),
-            mentalHealthTriggers = hashMapOf(
-                "anxiety" to false,
-                "depression" to false,
-                "insomnia" to true
-            ),
-            otherTriggers = hashMapOf(
-                "medicine" to false,
-                "infection" to false,
-                "sweat" to false,
-                "smoking" to true
-            )
-        ),
-        SkinConditionLog(
-            scLogId = 10,
-            userName = "hlev97",
-            creationDate = LocalDate.of(2022, 10, 10),
-            feeling = "unhappy",
-            foodTriggers = hashMapOf(
-                "wheat" to true,
-                "milk" to true,
-                "egg" to true,
-                "sea food" to false,
-                "nightshade" to false,
-                "soy" to false,
-                "citrus" to false,
-                "fast food" to false,
-                "fatty food" to true,
-                "alcohol" to false
-            ),
-            weatherTriggers = hashMapOf(
-                "hot" to false,
-                "dry" to false,
-                "cold" to false,
-                "rainy" to false,
-                "windy" to false,
-                "snowy" to false
-            ),
-            mentalHealthTriggers = hashMapOf(
-                "anxiety" to false,
-                "depression" to false,
-                "insomnia" to true
-            ),
-            otherTriggers = hashMapOf(
-                "medicine" to false,
-                "infection" to false,
-                "sweat" to false,
-                "smoking" to true
-            )
-        ),
-        SkinConditionLog(
-            scLogId = 11,
-            userName = "hlev97",
-            creationDate = LocalDate.of(2022, 10, 11),
+            creationDate = LocalDate.of(2022, 12, 8),
             feeling = "unhappy",
             foodTriggers = hashMapOf(
                 "wheat" to true,

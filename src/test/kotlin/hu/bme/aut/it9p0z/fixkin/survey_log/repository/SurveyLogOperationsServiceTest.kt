@@ -68,6 +68,7 @@ class SurveyLogOperationsServiceTest {
         operations.insertLog(
             userName = "hlev97",
             log = SurveyLog(
+                id = sizeBeforeInsert,
                 surveyLogId = sizeBeforeInsert,
                 userName = "hlev97",
                 creationDate = LocalDate.now(),
@@ -82,6 +83,7 @@ class SurveyLogOperationsServiceTest {
     fun updateLog() {
         val sizeBeforeInsert = operations.getAllLogs().body?.size ?: 0
         val log = SurveyLog(
+            id = sizeBeforeInsert,
             surveyLogId = sizeBeforeInsert,
             userName = "hlev97",
             creationDate = LocalDate.now(),
@@ -94,6 +96,7 @@ class SurveyLogOperationsServiceTest {
         var logs = operations.getAllLogs().body ?: emptyList()
         val insertedLog = logs[logs.lastIndex]
         val upadatedLog = SurveyLog(
+            id = insertedLog.surveyLogId,
             surveyLogId = insertedLog.surveyLogId,
             userName = insertedLog.userName,
             creationDate = insertedLog.creationDate,
@@ -121,33 +124,38 @@ class SurveyLogOperationsServiceTest {
 
     val logs = listOf(
         SurveyLog(
+            id = 1,
             surveyLogId = 1,
             userName = "hlev97",
-            creationDate = LocalDate.of(2022,9,21),
+            creationDate = LocalDate.of(2022,12,1),
             result = 14.0
         ),
         SurveyLog(
+            id = 2,
             surveyLogId = 2,
             userName = "hlev97",
-            creationDate = LocalDate.of(2022,9,27),
+            creationDate = LocalDate.of(2022,12,2),
             result = 12.0
         ),
         SurveyLog(
+            id = 3,
             surveyLogId = 3,
             userName = "hlev97",
-            creationDate = LocalDate.of(2022,10,4),
+            creationDate = LocalDate.of(2022,12,3),
             result = 13.0
         ),
         SurveyLog(
+            id = 4,
             surveyLogId = 4,
             userName = "hlev97",
-            creationDate = LocalDate.of(2022,10,11),
+            creationDate = LocalDate.of(2022,12,4),
             result = 15.0
         ),
         SurveyLog(
+            id = 5,
             surveyLogId = 5,
             userName = "hlev97",
-            creationDate = LocalDate.of(2022,10,17),
+            creationDate = LocalDate.of(2022,12,5),
             result = 12.0
         )
     )

@@ -41,8 +41,10 @@ class SurveyLogOperationsService @Autowired constructor(
     }
 
     override fun insertLog(userName: String, log: SurveyLog): ResponseEntity<SurveyLog> {
-        val logsByUser = repository.findAll()
+        val logs = repository.findAll()
+        val logsByUser = getUserLogs(userName)
         val logToInsert = SurveyLog(
+            id = logs.size+1,
             surveyLogId = logsByUser.size+1,
             userName = userName,
             creationDate = log.creationDate,
@@ -52,22 +54,22 @@ class SurveyLogOperationsService @Autowired constructor(
         return ResponseEntity.ok(responseLog)
     }
 
+    private fun getUserLogs(userName: String): List<SurveyLog> {
+        val query = Query()
+        query.addCriteria(Criteria.where("userName").`is`(userName))
+        return mongoTemplate.find(query, SurveyLog::class.java)
+    }
+
     override fun updateLog(userName: String, surveyLogId: Int, log: SurveyLog): ResponseEntity<SurveyLog> {
         val query = Query()
         query.addCriteria(Criteria.where("surveyLogId").`is`(surveyLogId))
         val update = Update()
-        val logUpdate = SurveyLog(
-            surveyLogId = surveyLogId,
-            userName = userName,
-            creationDate = log.creationDate,
-            result = log.result
-        )
-        update.set("result",logUpdate.result)
+        update.set("result",log.result)
         val updateResult = mongoTemplate.updateFirst(query,update, SurveyLog::class.java)
         if (!updateResult.wasAcknowledged()) {
             return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build()
         }
-        return ResponseEntity.ok(logUpdate.hideUsername())
+        return ResponseEntity.ok(log.hideUsername())
     }
 
     override fun deleteLog(userName: String, surveyLogId: Int): ResponseEntity<Any> {
