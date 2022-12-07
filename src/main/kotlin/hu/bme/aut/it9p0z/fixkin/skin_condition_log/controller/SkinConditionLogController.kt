@@ -57,12 +57,14 @@ class SkinConditionLogController @Autowired constructor(
     }
 
     @GetMapping("statistics/me")
+    @Secured(User.ROLE_USER)
     fun getStatistics(): ResponseEntity<ConditionLogStatistics> {
         val auth: Authentication = SecurityContextHolder.getContext().authentication
         return operationsService.getStatistics(auth.name)
     }
 
     @GetMapping("creationDates/me")
+    @Secured(User.ROLE_USER)
     fun getDates(): ResponseEntity<List<LocalDate>> {
         val auth: Authentication = SecurityContextHolder.getContext().authentication
         return operationsService.getCreationDates(auth.name)

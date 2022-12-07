@@ -89,7 +89,9 @@ class SkinConditionLogOperationsService @Autowired constructor(
     }
 
     override fun getStatistics(userName: String): ResponseEntity<ConditionLogStatistics> {
-        val logs = repository.findAll()
+        val query = Query()
+        query.addCriteria(Criteria.where("userName").`is`(userName))
+        val logs = mongoTemplate.find(query, SkinConditionLog::class.java)
         return ResponseEntity.ok(getStatisticsOfTriggers(logs))
     }
 
@@ -99,11 +101,11 @@ class SkinConditionLogOperationsService @Autowired constructor(
     }
 
     private fun getStatisticsOfTriggers(logs: List<SkinConditionLog>): ConditionLogStatistics {
-        val feelingProb = getFeelingsFrequency(logs).countTriggerProbabilities()
-        val foodTriggerProb = getTriggerFrequencyByCategory(logs, TriggerCategory.FOOD).countTriggerProbabilities()
-        val weatherTriggerProb = getTriggerFrequencyByCategory(logs, TriggerCategory.WEATHER).countTriggerProbabilities()
-        val mentalTriggerProb = getTriggerFrequencyByCategory(logs, TriggerCategory.MENTAL).countTriggerProbabilities()
-        val otherTriggerProb = getTriggerFrequencyByCategory(logs, TriggerCategory.OTHER).countTriggerProbabilities()
+        val feelingProb = getFeelingsFrequency(logs).countProbabilities()
+        val foodTriggerProb = getTriggerFrequencyByCategory(logs, TriggerCategory.FOOD).countProbabilities()
+        val weatherTriggerProb = getTriggerFrequencyByCategory(logs, TriggerCategory.WEATHER).countProbabilities()
+        val mentalTriggerProb = getTriggerFrequencyByCategory(logs, TriggerCategory.MENTAL).countProbabilities()
+        val otherTriggerProb = getTriggerFrequencyByCategory(logs, TriggerCategory.OTHER).countProbabilities()
 
         return ConditionLogStatistics(
             feelings = feelingProb,
@@ -114,12 +116,19 @@ class SkinConditionLogOperationsService @Autowired constructor(
         )
     }
 
-    private fun HashMap<String,Int>.countTriggerProbabilities(): HashMap<String,Float> {
+    private fun HashMap<String,Int>.countProbabilities(): HashMap<String,Float> {
         val triggerProbability = hashMapOf<String,Float>()
-        this.forEach { (key, value) ->
-            triggerProbability[key] = value.toFloat() / this.values.sum()
+        return if (this.values.sum() == 0) {
+            this.forEach { (key, _) ->
+                triggerProbability[key] = 0f
+            }
+            triggerProbability
+        } else {
+            this.forEach { (key, value) ->
+                triggerProbability[key] = value.toFloat() / this.values.sum()
+            }
+            triggerProbability
         }
-        return triggerProbability
     }
 
     private fun getTriggerFrequencyByCategory(logs: List<SkinConditionLog>, category: TriggerCategory): HashMap<String,Int> {
