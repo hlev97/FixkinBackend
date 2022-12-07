@@ -26,19 +26,12 @@ import java.time.LocalDate
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class SurveyLogControllerTest {
-
-    @Autowired
-    private lateinit var mvc: MockMvc
-
-    @Autowired
-    lateinit var operations: SurveyLogOperationsService
-
-    @Autowired
-    lateinit var userMongoRepository: UserMongoRepository
-
-    @Autowired
-    lateinit var passwordEncoder: PasswordEncoder
+class SurveyLogControllerTest @Autowired constructor(
+    private val mvc: MockMvc,
+    private val operations: SurveyLogOperationsService,
+    private val userMongoRepository: UserMongoRepository,
+    private val passwordEncoder: PasswordEncoder
+) {
 
     @BeforeEach
     fun setUp() {

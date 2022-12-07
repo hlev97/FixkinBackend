@@ -18,17 +18,11 @@ import java.time.LocalDate
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
-class SurveyLogOperationsServiceTest {
-
-    @Autowired
-    lateinit var operations: SurveyLogOperationsService
-
-    @Autowired
-    lateinit var userMongoRepository: UserMongoRepository
-
-    @Autowired
-    lateinit var passwordEncoder: PasswordEncoder
-
+class SurveyLogOperationsServiceTest @Autowired constructor(
+    private val operations: SurveyLogOperationsService,
+    private val userMongoRepository: UserMongoRepository,
+    private val passwordEncoder: PasswordEncoder
+) {
     @BeforeEach
     fun setUp() {
         addUser()

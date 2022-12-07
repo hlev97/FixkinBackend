@@ -19,17 +19,11 @@ import java.time.LocalDate
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
-class SkinConditionLogOperationsServiceTest {
-
-    @Autowired
-    lateinit var operations: SkinConditionLogOperationsService
-
-    @Autowired
-    lateinit var userMongoRepository: UserMongoRepository
-
-    @Autowired
-    lateinit var passwordEncoder: PasswordEncoder
-
+class SkinConditionLogOperationsServiceTest @Autowired constructor(
+    private val operations: SkinConditionLogOperationsService,
+    private val userMongoRepository: UserMongoRepository,
+    private val passwordEncoder: PasswordEncoder
+) {
     @BeforeEach
     fun setUp() {
         addUser()

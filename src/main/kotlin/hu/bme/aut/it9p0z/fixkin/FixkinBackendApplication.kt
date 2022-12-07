@@ -14,19 +14,12 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import java.time.LocalDate
 
 @SpringBootApplication
-class FixkinBackendApplication : CommandLineRunner {
-
-	@Autowired
-	private lateinit var passwordEncoder: PasswordEncoder
-
-	@Autowired
-	private lateinit var userRepository: UserMongoRepository
-
-	@Autowired
-	private lateinit var conditionLogService: SkinConditionLogOperationsService
-
-	@Autowired
-	private lateinit var surveyLogService: SurveyLogOperationsService
+class FixkinBackendApplication @Autowired constructor(
+	private val passwordEncoder: PasswordEncoder,
+	private val userRepository: UserMongoRepository,
+	private val conditionLogService: SkinConditionLogOperationsService,
+	private val surveyLogService: SurveyLogOperationsService
+) : CommandLineRunner {
 
 	override fun run(vararg args: String?) {
 		addUser()

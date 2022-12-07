@@ -21,16 +21,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class UserControllerTest {
-
-    @Autowired
-    private lateinit var mvc: MockMvc
-
-    @Autowired
-    private lateinit var repository: UserMongoRepository
-
-    @Autowired
-    private lateinit var passwordEncoder: PasswordEncoder
+class UserControllerTest @Autowired constructor(
+    private val mvc: MockMvc,
+    private val repository: UserMongoRepository,
+    private val passwordEncoder: PasswordEncoder
+) {
 
     @BeforeEach
     fun setUp() {
