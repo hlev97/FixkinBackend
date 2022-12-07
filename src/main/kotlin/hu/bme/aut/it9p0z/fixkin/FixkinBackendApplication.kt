@@ -4,8 +4,8 @@ import hu.bme.aut.it9p0z.fixkin.skin_condition_log.model.SkinConditionLog
 import hu.bme.aut.it9p0z.fixkin.skin_condition_log.repository.SkinConditionLogOperationsService
 import hu.bme.aut.it9p0z.fixkin.survey_log.model.SurveyLog
 import hu.bme.aut.it9p0z.fixkin.survey_log.repository.SurveyLogOperationsService
+import hu.bme.aut.it9p0z.fixkin.user.details.UserMongoRepository
 import hu.bme.aut.it9p0z.fixkin.user.model.User
-import hu.bme.aut.it9p0z.fixkin.user.repository.UserMongoRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication

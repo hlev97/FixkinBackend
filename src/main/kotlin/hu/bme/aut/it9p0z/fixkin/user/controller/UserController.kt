@@ -1,7 +1,7 @@
 package hu.bme.aut.it9p0z.fixkin.user.controller
 
+import hu.bme.aut.it9p0z.fixkin.user.details.UserMongoRepository
 import hu.bme.aut.it9p0z.fixkin.user.model.User
-import hu.bme.aut.it9p0z.fixkin.user.repository.UserMongoRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -11,8 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.client.HttpClientErrorException.Unauthorized
-import java.io.Serializable
 import java.security.Principal
 
 @RestController
@@ -23,8 +21,8 @@ class UserController @Autowired constructor(
 ) {
 
     @GetMapping("/all")
-    @Secured(User.ROLE_USER)
-    fun getAllUsers(): MutableList<User> = userRepository.findAll()
+    @Secured(User.ROLE_ADMIN)
+    fun getAllUsers(): List<User> = userRepository.findAll().map { it.copy(password = "") }
 
     @GetMapping("/all/usernames")
     fun getAllUsernames(): ResponseEntity<List<String>> {
@@ -61,7 +59,7 @@ class UserController @Autowired constructor(
             diseases = user.diseases,
             medicines = user.medicines,
             averageLifeQualityIndex = user.averageLifeQualityIndex,
-            roles = user.roles,
+            roles = mutableListOf(User.ROLE_USER),
             password =  passwordEncoder.encode(user.password),
             expired = user.expired,
             locked = user.locked,
@@ -71,81 +69,83 @@ class UserController @Autowired constructor(
         return ResponseEntity.ok(userRepository.save(userToAdd))
     }
 
-    @GetMapping("/diseases/{userName}")
+    @GetMapping("/diseases")
     @Secured(User.ROLE_USER)
-    fun getDiseasesByUser(@PathVariable("userName") userName: String): Any {
-        val user = userRepository.findById(userName)
+    fun getDiseasesByUser(): Any {
+        val auth: Authentication = SecurityContextHolder.getContext().authentication
+        val user = userRepository.findById(auth.name)
         return if (user.isPresent) {
             ResponseEntity.ok(user.get().diseases)
-        } else ResponseEntity.notFound()
+        } else ResponseEntity.notFound().build()
     }
 
-    @PutMapping("/diseases/add/{userName}/{newDisease}")
+    @PutMapping("/diseases/add/{newDisease}")
     @Secured(User.ROLE_USER)
     fun addNewDiseaseToUser(
-        @PathVariable("userName") userName: String,
         @PathVariable("newDisease") newDisease: String
     ): Any {
-        val user = userRepository.findById(userName)
+        val auth: Authentication = SecurityContextHolder.getContext().authentication
+        val user = userRepository.findById(auth.name)
         return if (user.isPresent) {
             val userCopy = user.get()
             userCopy.diseases.add(newDisease)
             userRepository.save(userCopy)
-            ResponseEntity.ok("$newDisease is added $userName's diseases")
-        } else ResponseEntity.notFound()
+            ResponseEntity.ok("$newDisease is added ${auth.name}'s diseases")
+        } else ResponseEntity.notFound().build()
     }
 
-    @PutMapping("/diseases/remove/{userName}/{diseaseToRemove}")
+    @PutMapping("/diseases/remove/{diseaseToRemove}")
     @Secured(User.ROLE_USER)
     fun removeDiseaseFromUser(
-        @PathVariable("userName") userName: String,
         @PathVariable("diseaseToRemove") diseaseToRemove: String
     ): Any {
-        val user = userRepository.findById(userName)
+        val auth: Authentication = SecurityContextHolder.getContext().authentication
+        val user = userRepository.findById(auth.name)
         return if (user.isPresent) {
             val userCopy = user.get()
             userCopy.diseases.remove(diseaseToRemove)
             userRepository.save(userCopy)
-            ResponseEntity.ok("$diseaseToRemove is removed from $userName's diseases")
-        } else ResponseEntity.notFound()
+            ResponseEntity.ok("$diseaseToRemove is removed from ${auth.name}'s diseases")
+        } else ResponseEntity.notFound().build()
     }
 
-    @GetMapping("/medicines/{userName}")
+    @GetMapping("/medicines")
     @Secured(User.ROLE_USER)
-    fun getMedicinesByUser(@PathVariable("userName") userName: String): Any {
-        val user = userRepository.findById(userName)
+    fun getMedicinesByUser(): Any {
+        val auth: Authentication = SecurityContextHolder.getContext().authentication
+        val user = userRepository.findById(auth.name)
         return if (user.isPresent) {
             ResponseEntity.ok(user.get().medicines)
         } else ResponseEntity.notFound()
     }
 
-    @PutMapping("/medicines/add/{userName}/{newMedicine}")
+    @PutMapping("/medicines/add/{newMedicine}")
     @Secured(User.ROLE_USER)
     fun addNewMedicineToUser(
-        @PathVariable("userName") userName: String,
         @PathVariable("newMedicine") newMedicine: String
     ): Any {
-        val user = userRepository.findById(userName)
+        val auth: Authentication = SecurityContextHolder.getContext().authentication
+        val user = userRepository.findById(auth.name)
         return if (user.isPresent) {
             val userCopy = user.get()
             userCopy.medicines.add(newMedicine)
             userRepository.save(userCopy)
-            ResponseEntity.ok("$newMedicine is added $userName's medicines")
-        } else ResponseEntity.notFound()
+            ResponseEntity.ok("$newMedicine is added ${auth.name}'s medicines")
+        } else ResponseEntity.notFound().build()
     }
 
-    @PutMapping("/medicines/remove/{userName}/{medicineToRemove}")
+    @PutMapping("/medicines/remove/{medicineToRemove}")
     @Secured(User.ROLE_USER)
     fun removeMedicine(
-        @PathVariable("userName") userName: String,
         @PathVariable("medicineToRemove") medicineToRemove: String
     ): Any {
-        val user = userRepository.findById(userName)
+        val auth: Authentication = SecurityContextHolder.getContext().authentication
+        val user = userRepository.findById(auth.name)
         return if (user.isPresent) {
             val userCopy = user.get()
             userCopy.medicines.remove(medicineToRemove)
             userRepository.save(userCopy)
-            ResponseEntity.ok("$medicineToRemove is removed from $userName's medicines")
-        } else ResponseEntity.notFound()
+            ResponseEntity.ok("$medicineToRemove is removed from ${auth.name}'s medicines")
+        } else ResponseEntity.notFound().build()
     }
 }

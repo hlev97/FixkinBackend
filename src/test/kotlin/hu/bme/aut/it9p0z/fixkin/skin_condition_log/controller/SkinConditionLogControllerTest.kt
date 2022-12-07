@@ -2,8 +2,8 @@ package hu.bme.aut.it9p0z.fixkin.skin_condition_log.controller
 
 import hu.bme.aut.it9p0z.fixkin.skin_condition_log.model.SkinConditionLog
 import hu.bme.aut.it9p0z.fixkin.skin_condition_log.repository.SkinConditionLogOperationsService
+import hu.bme.aut.it9p0z.fixkin.user.details.UserMongoRepository
 import hu.bme.aut.it9p0z.fixkin.user.model.User
-import hu.bme.aut.it9p0z.fixkin.user.repository.UserMongoRepository
 import org.assertj.core.api.Assertions
 import org.hamcrest.Matchers.containsString
 import org.junit.jupiter.api.AfterEach
@@ -26,20 +26,12 @@ import java.time.LocalDate
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class SkinConditionLogControllerTest {
-
-    @Autowired
-    private lateinit var mvc: MockMvc
-
-    @Autowired
-    lateinit var operations: SkinConditionLogOperationsService
-
-    @Autowired
-    lateinit var userMongoRepository: UserMongoRepository
-
-    @Autowired
-    lateinit var passwordEncoder: PasswordEncoder
-
+class SkinConditionLogControllerTest @Autowired constructor(
+    val mvc: MockMvc,
+    val operations: SkinConditionLogOperationsService,
+    val userMongoRepository: UserMongoRepository,
+    val passwordEncoder: PasswordEncoder
+) {
     @BeforeEach
     fun setUp() {
         addUser()
@@ -69,7 +61,7 @@ class SkinConditionLogControllerTest {
     }
 
     @Test
-    fun addNewLog() {
+    fun `Adding new log to Mongo DB`() {
         val body = "{\"creationDate\" : \"2012/08/15\",\"feeling\" : \"bad\",\"foodTriggers\" : {\"soy\" : true},\"weatherTriggers\" : {\"rainy\" : true},\"mentalHealthTriggers\" : {\"anxiety\" : true},\"otherTriggers\" : {\"smoking\" : true}}"
         val result = "{\"scLogId\":12,\"userName\":null,\"creationDate\":\"2012/08/15\",\"feeling\":\"bad\",\"foodTriggers\":{\"soy\":true},\"weatherTriggers\":{\"rainy\":true},\"mentalHealthTriggers\":{\"anxiety\":true},\"otherTriggers\":{\"smoking\":true}}"
         mvc.perform(post("http://localhost:8102/skin_condition_logs/")
@@ -78,6 +70,7 @@ class SkinConditionLogControllerTest {
             .with(user("hlev97").password("password").roles("USER"))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().string(result))
+            .andExpect(status().isOk)
     }
 
     @Test

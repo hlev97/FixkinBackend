@@ -25,20 +25,4 @@ data class User(
         const val ROLE_ADMIN = "ROLE_ADMIN"
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || javaClass != other.javaClass) return false
-
-        val o: User = other as User
-        if (userName != o.userName) return false
-        return true
-    }
-
-    override fun hashCode(): Int {
-        val prime = 31
-        var result = 1
-        result = prime * result + if (fullName.isNullOrEmpty()) 0 else fullName.hashCode()
-        return result
-    }
-
 }

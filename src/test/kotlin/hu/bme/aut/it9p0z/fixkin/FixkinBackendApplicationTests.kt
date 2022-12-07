@@ -2,7 +2,7 @@ package hu.bme.aut.it9p0z.fixkin
 
 import hu.bme.aut.it9p0z.fixkin.skin_condition_log.repository.SkinConditionLogOperationsService
 import hu.bme.aut.it9p0z.fixkin.survey_log.repository.SurveyLogOperationsService
-import hu.bme.aut.it9p0z.fixkin.user.repository.UserMongoRepository
+import hu.bme.aut.it9p0z.fixkin.user.details.UserMongoRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

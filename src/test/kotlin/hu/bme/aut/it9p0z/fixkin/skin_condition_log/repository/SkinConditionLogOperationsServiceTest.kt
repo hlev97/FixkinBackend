@@ -1,8 +1,8 @@
 package hu.bme.aut.it9p0z.fixkin.skin_condition_log.repository
 
 import hu.bme.aut.it9p0z.fixkin.skin_condition_log.model.SkinConditionLog
+import hu.bme.aut.it9p0z.fixkin.user.details.UserMongoRepository
 import hu.bme.aut.it9p0z.fixkin.user.model.User
-import hu.bme.aut.it9p0z.fixkin.user.repository.UserMongoRepository
 import org.assertj.core.api.Assertions
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
