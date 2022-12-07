@@ -53,7 +53,7 @@ class SkinConditionLogControllerTest @Autowired constructor(
     }
 
     @Test
-    fun getAllLogs_Forbidden() {
+    fun `getting all user logs with user role, expecting FORBIDDEN status`() {
         mvc.perform(get("http://localhost:8102/skin_condition_logs/all/")
             .with(user("hlev97").password("password").roles("USER"))
             .contentType(MediaType.APPLICATION_JSON))
@@ -61,9 +61,9 @@ class SkinConditionLogControllerTest @Autowired constructor(
     }
 
     @Test
-    fun `Adding new log to Mongo DB`() {
-        val body = "{\"creationDate\" : \"2012/08/15\",\"feeling\" : \"bad\",\"foodTriggers\" : {\"soy\" : true},\"weatherTriggers\" : {\"rainy\" : true},\"mentalHealthTriggers\" : {\"anxiety\" : true},\"otherTriggers\" : {\"smoking\" : true}}"
-        val result = "{\"id\":6,\"scLogId\":6,\"userName\":null,\"creationDate\":\"2012/08/15\",\"feeling\":\"bad\",\"foodTriggers\":{\"soy\":true},\"weatherTriggers\":{\"rainy\":true},\"mentalHealthTriggers\":{\"anxiety\":true},\"otherTriggers\":{\"smoking\":true}}"
+    fun `POST request expecting OK status and matching response`() {
+        val body = "{\"creationDate\" : \"2022/12/06\",\"feeling\" : \"bad\",\"foodTriggers\" : {\"soy\" : true},\"weatherTriggers\" : {\"rainy\" : true},\"mentalHealthTriggers\" : {\"anxiety\" : true},\"otherTriggers\" : {\"smoking\" : true}}"
+        val result = "{\"id\":6,\"scLogId\":6,\"userName\":null,\"creationDate\":\"2022/12/06\",\"feeling\":\"bad\",\"foodTriggers\":{\"soy\":true},\"weatherTriggers\":{\"rainy\":true},\"mentalHealthTriggers\":{\"anxiety\":true},\"otherTriggers\":{\"smoking\":true}}"
         mvc.perform(post("http://localhost:8102/skin_condition_logs/")
             .content(body)
             .accept(MediaType.APPLICATION_JSON)
@@ -74,7 +74,7 @@ class SkinConditionLogControllerTest @Autowired constructor(
     }
 
     @Test
-    fun updateLog() {
+    fun `PUT request expecting OK status and matching response`() {
         val body = "{ \"creationDate\": \"2022/12/04\", \"feeling\": \"neutral\", \"foodTriggers\": { \"alcohol\": false, \"egg\": true, \"fast food\": true, \"milk\": false, \"fatty food\": true, \"wheat\": true, \"sea food\": false, \"soy\": false, \"nightshade\": true, \"citrus\": false }, \"weatherTriggers\": { \"rainy\": true, \"dry\": false, \"cold\": true, \"hot\": false, \"snowy\": false, \"windy\": true }, \"mentalHealthTriggers\": { \"anxiety\": false, \"depression\": true, \"insomnia\": false }, \"otherTriggers\": { \"infection\": false, \"smoking\": true, \"sweat\": false, \"medicine\": true } }"
         val result = "{\"id\":0,\"scLogId\":0,\"userName\":null,\"creationDate\":\"2022/12/04\",\"feeling\":\"neutral\",\"foodTriggers\":{\"alcohol\":false,\"egg\":true,\"fast food\":true,\"milk\":false,\"fatty food\":true,\"wheat\":true,\"sea food\":false,\"soy\":false,\"nightshade\":true,\"citrus\":false},\"weatherTriggers\":{\"rainy\":true,\"dry\":false,\"cold\":true,\"hot\":false,\"snowy\":false,\"windy\":true},\"mentalHealthTriggers\":{\"anxiety\":false,\"depression\":true,\"insomnia\":false},\"otherTriggers\":{\"infection\":false,\"smoking\":true,\"sweat\":false,\"medicine\":true}}"
         mvc.perform(put("http://localhost:8102/skin_condition_logs/{scLogId}","10")
@@ -87,7 +87,7 @@ class SkinConditionLogControllerTest @Autowired constructor(
     }
 
     @Test
-    fun getAllLogsByUser() {
+    fun `GET request expecting OK status and matching response that contains skin condition logs`() {
         val result = "[{\"id\":1,\"scLogId\":1,\"userName\":\"hlev97\",\"creationDate\":\"2022/12/04\",\"feeling\":\"sad\",\"foodTriggers\":{\"alcohol\":false,\"egg\":true,\"fast food\":true,\"milk\":false,\"fatty food\":true,\"wheat\":true,\"sea food\":false,\"soy\":false,\"nightshade\":true,\"citrus\":false},\"weatherTriggers\":{\"rainy\":true,\"dry\":false,\"cold\":true,\"hot\":false,\"snowy\":false,\"windy\":true},\"mentalHealthTriggers\":{\"anxiety\":false,\"depression\":true,\"insomnia\":false},\"otherTriggers\":{\"infection\":false,\"smoking\":true,\"sweat\":false,\"medicine\":true}},{\"id\":2,\"scLogId\":2,\"userName\":\"hlev97\",\"creationDate\":\"2022/12/05\",\"feeling\":\"unhappy\",\"foodTriggers\":{\"alcohol\":false,\"egg\":true,\"fast food\":false,\"milk\":true,\"fatty food\":false,\"wheat\":false,\"sea food\":false,\"soy\":true,\"nightshade\":true,\"citrus\":false},\"weatherTriggers\":{\"rainy\":true,\"dry\":false,\"cold\":true,\"hot\":false,\"snowy\":false,\"windy\":true},\"mentalHealthTriggers\":{\"anxiety\":false,\"depression\":true,\"insomnia\":false},\"otherTriggers\":{\"infection\":false,\"smoking\":true,\"sweat\":false,\"medicine\":true}},{\"id\":3,\"scLogId\":3,\"userName\":\"hlev97\",\"creationDate\":\"2022/12/06\",\"feeling\":\"n"
         mvc.perform(get("http://localhost:8102/skin_condition_logs/all/me")
             .with(user("hlev97").password("password").roles("USER"))
@@ -97,7 +97,7 @@ class SkinConditionLogControllerTest @Autowired constructor(
     }
 
     @Test
-    fun deleteLogById() {
+    fun `DELETE request expecting OK status`() {
         mvc.perform(delete("http://localhost:8102/skin_condition_logs/{scLogId}","2")
             .with(user("hlev97").password("password").roles("USER"))
             .contentType(MediaType.APPLICATION_JSON))
@@ -105,7 +105,7 @@ class SkinConditionLogControllerTest @Autowired constructor(
     }
 
     @Test
-    fun getStatistics() {
+    fun `GET request expecting OK status and matching result that contains skin condition log statistics`() {
         val result = "{\"feelings\":{\"unhappy\":0.4,\"sad\":0.2,\"happy\":0.0,\"neutral\":0.4,\"joyful\":0.0},\"foodTriggers\":{\"egg\":0.2777778,\"milk\":0.16666667,\"fatty food\":0.11111111,\"wheat\":0.16666667,\"nightshade\":0.11111111},\"weatherTriggers\":{\"rainy\":0.27272728,\"cold\":0.36363637,\"hot\":0.0,\"snowy\":0.0,\"windy\":0.36363637},\"mentalHealthTriggers\":{\"anxiety\":0.0,\"depression\":0.75,\"insomnia\":0.25},\"otherTriggers\":{\"smoking\":0.625,\"sweat\":0.0,\"medicine\":0.375}}"
         mvc.perform(get("http://localhost:8102/skin_condition_logs/statistics/me")
             .with(user("hlev97").password("password").roles("ADMIN","USER"))
@@ -115,7 +115,7 @@ class SkinConditionLogControllerTest @Autowired constructor(
     }
 
     @Test
-    fun getDates() {
+    fun `GET request expecting OK status and matching result that contains a list of the log's creation dates`() {
         val result = "[\"2022-12-04\",\"2022-12-05\",\"2022-12-06\",\"2022-12-07\",\"2022-12-08\"]"
         mvc.perform(get("http://localhost:8102/skin_condition_logs/creationDates/me")
             .with(user("hlev97").password("password").roles("ADMIN","USER"))

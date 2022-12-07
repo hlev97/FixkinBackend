@@ -71,7 +71,7 @@ class SurveyLogControllerTest {
     }
 
     @Test
-    fun getAllLogs_Forbidden() {
+    fun `GET request made with a USER role expecting FORBIDDEN status`() {
         mvc.perform(get("http://localhost:8102/survey_logs/all")
             .with(user("hlev97").password("password").roles("USER"))
             .contentType(MediaType.APPLICATION_JSON))
@@ -79,7 +79,7 @@ class SurveyLogControllerTest {
     }
 
     @Test
-    fun addNewLog() {
+    fun `POST request expecting OK status and matching result`() {
         val body = "{\"creationDate\":\"2022/12/06\",\"result\":14.0}"
         val result = "{\"id\":6,\"surveyLogId\":6,\"userName\":null,\"creationDate\":\"2022/12/06\",\"result\":14.0}"
         mvc.perform(post("http://localhost:8102/survey_logs/")
@@ -91,7 +91,7 @@ class SurveyLogControllerTest {
     }
 
     @Test
-    fun updateLog() {
+    fun `PUT request expecting OK status and matching result`() {
         val body = "{\"creationDate\":\"2022/12/02\",\"result\":14.0}"
         val result = "{\"id\":0,\"surveyLogId\":0,\"userName\":null,\"creationDate\":\"2022/12/02\",\"result\":14.0}"
         mvc.perform(put("http://localhost:8102/survey_logs/{surveyLogId}","2")
@@ -104,7 +104,7 @@ class SurveyLogControllerTest {
     }
 
     @Test
-    fun getAllLogsByUser() {
+    fun `GET request expecting OK status and matching result that contains a list of survey logs`() {
         val result = "[{\"id\":1,\"surveyLogId\":1,\"userName\":\"hlev97\",\"creationDate\":\"2022/12/01\",\"result\":14.0},{\"id\":2,\"surveyLogId\":2,\"userName\":\"hlev97\",\"creationDate\":\"2022/12/02\",\"result\":12.0},{\"id\":3,\"surveyLogId\":3,\"userName\":\"hlev97\",\"creationDate\":\"2022/12/03\",\"result\":13.0},{\"id\":4,\"surveyLogId\":4,\"userName\":\"hlev97\",\"creationDate\":\"2022/12/04\",\"result\":15.0},{\"id\":5,\"surveyLogId\":5,\"userName\":\"hlev97\",\"creationDate\":\"2022/12/05\",\"result\":12.0}]"
         mvc.perform(get("http://localhost:8102/survey_logs/all/me")
             .with(user("hlev97").password("password").roles("USER"))
@@ -114,7 +114,7 @@ class SurveyLogControllerTest {
     }
 
     @Test
-    fun deleteLogById_Ok() {
+    fun `DELETE request expecting OK status`() {
         mvc.perform(delete("http://localhost:8102/survey_logs/{surveyLogId}","2")
             .with(user("hlev97").password("password").roles("USER"))
             .contentType(MediaType.APPLICATION_JSON))

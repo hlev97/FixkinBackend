@@ -66,7 +66,7 @@ class UserControllerTest {
     }
 
     @Test
-    fun getMe() {
+    fun `GET request expecting OK status and matching result that contains user info`() {
         val result = "{\"userName\":\"hlev97\",\"fullName\":\"Levente Heizer\",\"height\":178.0,\"weight\":74.0,\"diseases\":[\"inverse psoriasis\",\"plaque psoriasis\"],\"medicines\":[\"methotrexate\"],\"averageLifeQualityIndex\":null,\"roles\":[\"ROLE_USER\",\"ROLE_ADMIN\"],\"password\":\"\$2a\$10\$"
         mvc.perform(get("http://localhost:8102/user/me/")
             .with(SecurityMockMvcRequestPostProcessors.user("hlev97").password("password").roles("USER"))
@@ -76,9 +76,9 @@ class UserControllerTest {
     }
 
     @Test
-    fun addNewUser() {
+    fun `POST request expecting OK status and matching response that contains registered user info`() {
         val body = "{\"userName\":\"hlev\",\"fullName\":\"Heizer Levente\",\"height\":178.0,\"weight\":75.0,\"roles\":[\"ROLE_USER\"],\"password\":\"password\"}"
-        val result = "{\"userName\":\"hlev\",\"fullName\":\"Heizer Levente\",\"height\":178.0,\"weight\":75.0,\"diseases\":[],\"medicines\":[],\"averageLifeQualityIndex\":null,\"roles\":[\"ROLE_USER\"],\"password\":\"\$2a\$10\$"
+        val result = "{\"userName\":\"hlev\",\"fullName\":\"Heizer Levente\",\"height\":178.0,\"weight\":75.0,\"diseases\":[],\"medicines\":[],\"averageLifeQualityIndex\":null,\"roles\":[\"ROLE_USER\"],\"password\":"
         mvc.perform(post("http://localhost:8102/user/")
                 .content(body)
                 .accept(MediaType.APPLICATION_JSON)
@@ -88,7 +88,7 @@ class UserControllerTest {
     }
 
     @Test
-    fun getDiseasesByUser() {
+    fun `GET request expecting OK status and matching result that contains a list of the user's diseases`() {
         val result = "[\"inverse psoriasis\",\"plaque psoriasis\"]"
         mvc.perform(get("http://localhost:8102/user/diseases")
             .with(SecurityMockMvcRequestPostProcessors.user("hlev97").password("password").roles("USER"))
@@ -98,7 +98,7 @@ class UserControllerTest {
     }
 
     @Test
-    fun addNewDiseaseToUser() {
+    fun `PUT request expecting OK status and matching result about the addition of a new disease`() {
         val result = "psoriasis is added hlev97's diseases"
         mvc.perform(put("http://localhost:8102/user/diseases/add/{newDisease}","psoriasis")
             .with(SecurityMockMvcRequestPostProcessors.user("hlev97").password("password").roles("USER"))
@@ -108,7 +108,7 @@ class UserControllerTest {
     }
 
     @Test
-    fun removeDiseaseFromUser() {
+    fun `PUT request expecting OK status and matching result about the removal of a disease`() {
         val result = "psoriasis is removed from hlev97's diseases"
         mvc.perform(put("http://localhost:8102/user/diseases/remove/{diseaseToRemove}","psoriasis")
             .with(SecurityMockMvcRequestPostProcessors.user("hlev97").password("password").roles("USER"))
@@ -118,7 +118,7 @@ class UserControllerTest {
     }
 
     @Test
-    fun getMedicinesByUser() {
+    fun `GET request expecting OK status and matching result that contains a list of the user's medicines`() {
         val result = "[\"methotrexate\"]"
         mvc.perform(get("http://localhost:8102/user/medicines")
             .with(SecurityMockMvcRequestPostProcessors.user("hlev97").password("password").roles("USER"))
@@ -128,7 +128,7 @@ class UserControllerTest {
     }
 
     @Test
-    fun addNewMedicineToUser() {
+    fun `PUT request expecting OK status and matching result about the addition of a new medicine`() {
         val result = "Vitamin D is added hlev97's medicines"
         mvc.perform(put("http://localhost:8102/user/medicines/add/{newMedicine}","Vitamin D")
             .with(SecurityMockMvcRequestPostProcessors.user("hlev97").password("password").roles("USER"))
@@ -138,7 +138,7 @@ class UserControllerTest {
     }
 
     @Test
-    fun removeMedicine() {
+    fun `PUT request expecting OK status and matching result about the removal of a medicine`() {
         val result = "Vitamin D is removed from hlev97's medicines"
         mvc.perform(put("http://localhost:8102/user/medicines/remove/{medicineToRemove}","Vitamin D")
             .with(SecurityMockMvcRequestPostProcessors.user("hlev97").password("password").roles("USER"))
