@@ -23,4 +23,6 @@ interface SkinConditionLogOperations {
 
     fun getCreationDates(userName: String): ResponseEntity<List<LocalDate>>
 
+    fun getLastLogFromUser(userName: String): ResponseEntity<SkinConditionLog>
+
 }

@@ -3,6 +3,7 @@ package hu.bme.aut.it9p0z.fixkin.survey_log.repository
 import hu.bme.aut.it9p0z.fixkin.survey_log.model.SurveyLog
 import hu.bme.aut.it9p0z.fixkin.survey_log.model.hideUsername
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
@@ -88,6 +89,14 @@ class SurveyLogOperationsService @Autowired constructor(
         } catch (e: Exception) {
             ResponseEntity.status(HttpStatus.CONFLICT).build()
         }
+    }
+
+    override fun getLastLogFromUser(userName: String): ResponseEntity<SurveyLog> {
+        val query = Query()
+        query.addCriteria(Criteria.where("userName").`is`(userName))
+        query.with(Sort.by(Sort.Direction.DESC,"creationDate")).limit(1)
+        val lastLog = mongoTemplate.findOne(query, SurveyLog::class.java)
+        return ResponseEntity.ok(lastLog)
     }
 
 }

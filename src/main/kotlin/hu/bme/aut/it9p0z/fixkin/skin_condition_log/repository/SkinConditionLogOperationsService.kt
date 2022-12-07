@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
 import java.time.LocalDate
+import org.springframework.data.domain.*
 
 @Repository
 interface SkinConditionLogMongoRepository : MongoRepository<SkinConditionLog,LocalDate>
@@ -98,6 +99,14 @@ class SkinConditionLogOperationsService @Autowired constructor(
     override fun getCreationDates(userName: String): ResponseEntity<List<LocalDate>> {
         val creationDates = repository.findAll().map { it.creationDate }
         return ResponseEntity.ok(creationDates)
+    }
+
+    override fun getLastLogFromUser(userName: String): ResponseEntity<SkinConditionLog> {
+        val query = Query()
+        query.addCriteria(Criteria.where("userName").`is`(userName))
+        query.with(Sort.by(Sort.Direction.DESC,"creationDate")).limit(1)
+        val lastLog = mongoTemplate.findOne(query,SkinConditionLog::class.java)
+        return ResponseEntity.ok(lastLog)
     }
 
     private fun getStatisticsOfTriggers(logs: List<SkinConditionLog>): ConditionLogStatistics {
@@ -193,7 +202,7 @@ class SkinConditionLogOperationsService @Autowired constructor(
         val topTriggers = hashMapOf<String,Float>()
         for (i in 0 until N) {
             var max = 0f
-            var keyToRemove: String = ""
+            var keyToRemove = ""
             if (triggers.size != 0) {
                 triggers.forEach { (key, value) ->
                     if (value >= max) {

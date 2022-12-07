@@ -17,4 +17,6 @@ interface SurveyLogOperations {
 
     fun deleteAllLogsOfUser(userName: String): ResponseEntity<Any>
 
+    fun getLastLogFromUser(userName: String): ResponseEntity<SurveyLog>
+
 }

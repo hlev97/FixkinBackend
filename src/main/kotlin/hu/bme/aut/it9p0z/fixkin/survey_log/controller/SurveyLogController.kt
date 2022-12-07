@@ -9,7 +9,6 @@ import org.springframework.security.access.annotation.Secured
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.client.HttpClientErrorException.Unauthorized
 
 @RestController
 @RequestMapping("/survey_logs")
@@ -60,6 +59,13 @@ class SurveyLogController @Autowired constructor(
     ): ResponseEntity<Any> {
         val auth: Authentication = SecurityContextHolder.getContext().authentication
         return operationsService.deleteLog(auth.name, surveyLogId)
+    }
+
+    @GetMapping("last/me")
+    @Secured(User.ROLE_USER)
+    fun getLastLog(): ResponseEntity<SurveyLog> {
+        val auth: Authentication = SecurityContextHolder.getContext().authentication
+        return operationsService.getLastLogFromUser(auth.name)
     }
 
 }

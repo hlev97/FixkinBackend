@@ -56,7 +56,7 @@ class FixkinBackendApplication : CommandLineRunner {
 			SkinConditionLog(
 				scLogId = 1,
 				userName = "hlev97",
-				creationDate = LocalDate.of(2022, 10, 1),
+				creationDate = LocalDate.of(2022, 12, 4),
 				feeling = "sad",
 				foodTriggers = hashMapOf(
 					"wheat" to true,
@@ -93,7 +93,7 @@ class FixkinBackendApplication : CommandLineRunner {
 			SkinConditionLog(
 				scLogId = 2,
 				userName = "hlev97",
-				creationDate = LocalDate.of(2022, 10, 2),
+				creationDate = LocalDate.of(2022, 12, 5),
 				feeling = "unhappy",
 				foodTriggers = hashMapOf(
 					"wheat" to false,
@@ -130,7 +130,7 @@ class FixkinBackendApplication : CommandLineRunner {
 			SkinConditionLog(
 				scLogId = 3,
 				userName = "hlev97",
-				creationDate = LocalDate.of(2022, 10, 3),
+				creationDate = LocalDate.of(2022, 12, 6),
 				feeling = "neutral",
 				foodTriggers = hashMapOf(
 					"wheat" to true,
@@ -167,7 +167,7 @@ class FixkinBackendApplication : CommandLineRunner {
 			SkinConditionLog(
 				scLogId = 4,
 				userName = "hlev97",
-				creationDate = LocalDate.of(2022, 10, 4),
+				creationDate = LocalDate.of(2022, 12, 7),
 				feeling = "neutral",
 				foodTriggers = hashMapOf(
 					"wheat" to false,
@@ -204,7 +204,7 @@ class FixkinBackendApplication : CommandLineRunner {
 			SkinConditionLog(
 				scLogId = 5,
 				userName = "hlev97",
-				creationDate = LocalDate.of(2022, 10, 5),
+				creationDate = LocalDate.of(2022, 12, 8),
 				feeling = "unhappy",
 				foodTriggers = hashMapOf(
 					"wheat" to true,
@@ -241,7 +241,7 @@ class FixkinBackendApplication : CommandLineRunner {
 			SkinConditionLog(
 				scLogId = 6,
 				userName = "hlev97",
-				creationDate = LocalDate.of(2022, 10, 6),
+				creationDate = LocalDate.of(2022, 12, 9),
 				feeling = "unhappy",
 				foodTriggers = hashMapOf(
 					"wheat" to true,
@@ -278,7 +278,7 @@ class FixkinBackendApplication : CommandLineRunner {
 			SkinConditionLog(
 				scLogId = 7,
 				userName = "hlev97",
-				creationDate = LocalDate.of(2022, 10, 7),
+				creationDate = LocalDate.of(2022, 12, 10),
 				feeling = "unhappy",
 				foodTriggers = hashMapOf(
 					"wheat" to true,
@@ -315,7 +315,7 @@ class FixkinBackendApplication : CommandLineRunner {
 			SkinConditionLog(
 				scLogId = 8,
 				userName = "hlev97",
-				creationDate = LocalDate.of(2022, 10, 8),
+				creationDate = LocalDate.of(2022, 12, 11),
 				feeling = "unhappy",
 				foodTriggers = hashMapOf(
 					"wheat" to true,
@@ -352,7 +352,7 @@ class FixkinBackendApplication : CommandLineRunner {
 			SkinConditionLog(
 				scLogId = 9,
 				userName = "hlev97",
-				creationDate = LocalDate.of(2022, 10, 9),
+				creationDate = LocalDate.of(2022, 12, 12),
 				feeling = "unhappy",
 				foodTriggers = hashMapOf(
 					"wheat" to true,
@@ -389,7 +389,7 @@ class FixkinBackendApplication : CommandLineRunner {
 			SkinConditionLog(
 				scLogId = 10,
 				userName = "hlev97",
-				creationDate = LocalDate.of(2022, 10, 10),
+				creationDate = LocalDate.of(2022, 12, 13),
 				feeling = "unhappy",
 				foodTriggers = hashMapOf(
 					"wheat" to true,
@@ -426,7 +426,7 @@ class FixkinBackendApplication : CommandLineRunner {
 			SkinConditionLog(
 				scLogId = 11,
 				userName = "hlev97",
-				creationDate = LocalDate.of(2022, 10, 11),
+				creationDate = LocalDate.of(2022, 12, 14),
 				feeling = "unhappy",
 				foodTriggers = hashMapOf(
 					"wheat" to true,

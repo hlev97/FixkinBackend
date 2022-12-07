@@ -69,4 +69,12 @@ class SkinConditionLogController @Autowired constructor(
         val auth: Authentication = SecurityContextHolder.getContext().authentication
         return operationsService.getCreationDates(auth.name)
     }
+
+    @GetMapping("last/me")
+    @Secured(User.ROLE_USER)
+    fun getLastLog(): ResponseEntity<SkinConditionLog> {
+        val auth: Authentication = SecurityContextHolder.getContext().authentication
+        return operationsService.getLastLogFromUser(auth.name)
+    }
+    
 }
